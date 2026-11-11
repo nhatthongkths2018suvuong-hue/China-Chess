@@ -2,7 +2,7 @@ name: Build APK
 
 on:
   push:
-  workflow_dispatch:   # cho phép bấm chạy thủ công trong tab Actions
+  workflow_dispatch:
 
 jobs:
   build:
