@@ -36,6 +36,8 @@ public class GameActivity extends Activity implements BoardView.Listener {
     private static final int NO_CAPTURE_DRAW_PLIES = 50;
     // Chế độ hai người: xoay quân Đen ngược lại để người ngồi phía đối diện nhìn thuận chiều. Đặt false để tắt.
     private static final boolean ROTATE_BLACK_IN_TWO_PLAYER = true;
+    // Chiều ngang (dp) của hộp thoại kết thúc ván khi cầm máy ngang. Giảm số này nếu vẫn thấy che bàn cờ.
+    private static final int END_DIALOG_WIDTH_LANDSCAPE_DP = 210;
     private boolean vsAi;
     private boolean humanRed = true; // khi chơi với máy: người chơi cầm quân Đỏ (đi trước) hay Đen (đi sau)
     // Khi người chơi cầm quân Đen thì lật bàn cờ để quân của mình nằm phía dưới. Đặt false để tắt.
@@ -267,8 +269,8 @@ public class GameActivity extends Activity implements BoardView.Listener {
             boolean land = getResources().getDisplayMetrics().widthPixels > getResources().getDisplayMetrics().heightPixels;
             if (land) { // máy nằm ngang: đẩy sang bên phải (khu vực các nút), bàn cờ nằm bên trái
                 lp.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
-                lp.width = dp(260);
-                lp.x = dp(4);
+                lp.width = dp(END_DIALOG_WIDTH_LANDSCAPE_DP);
+                lp.x = 0;
             } else {    // máy đứng: đẩy xuống sát đáy màn hình
                 lp.gravity = Gravity.BOTTOM;
                 lp.y = dp(8);
