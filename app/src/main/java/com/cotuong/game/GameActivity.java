@@ -261,23 +261,26 @@ public class GameActivity extends Activity implements BoardView.Listener {
                     @Override public void onClick(DialogInterface d, int w) { finish(); }
                 })
                 .create();
-        // Đặt hộp thoại thấp xuống để không che bàn cờ, và bỏ lớp làm tối nền để còn thấy rõ nước đi cuối.
+        // Phải gọi show() TRƯỚC rồi mới chỉnh cửa sổ: nếu chỉnh trước, Android sẽ đặt lại kích thước,
+        // vị trí và lớp làm tối nền về mặc định ngay khi hộp thoại hiện ra.
+        dlg.show();
         Window w = dlg.getWindow();
         if (w != null) {
-            w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            WindowManager.LayoutParams lp = w.getAttributes();
+            w.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // không làm tối bàn cờ
             boolean land = getResources().getDisplayMetrics().widthPixels > getResources().getDisplayMetrics().heightPixels;
-            if (land) { // máy nằm ngang: đẩy sang bên phải (khu vực các nút), bàn cờ nằm bên trái
+            WindowManager.LayoutParams lp = w.getAttributes();
+            lp.dimAmount = 0f;
+            if (land) { // máy nằm ngang: thu nhỏ chiều ngang và đẩy sang bên phải, bàn cờ ở bên trái
                 lp.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
-                lp.width = dp(END_DIALOG_WIDTH_LANDSCAPE_DP);
                 lp.x = 0;
+                lp.width = dp(END_DIALOG_WIDTH_LANDSCAPE_DP);
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
             } else {    // máy đứng: đẩy xuống sát đáy màn hình
                 lp.gravity = Gravity.BOTTOM;
                 lp.y = dp(8);
             }
             w.setAttributes(lp);
         }
-        dlg.show();
     }
 
     // ---------------- Đồng hồ ----------------
